@@ -25,13 +25,27 @@ function updateJobUI() {
   const descCard = document.querySelector('div.description-card');
   if (!descCard) return;
 
-  chrome.storage.local.get(['submittedJobs'], (result) => {
-    const submittedJobs = result.submittedJobs || [];
+  chrome.storage.local.get(['submittedJobsData'], (result) => {
+    const jobsData = result.submittedJobsData || {};
     
-    if (submittedJobs.includes(jobId)) {
-      descCard.classList.add('ness-submitted-card');
+    // Check if this specific job ID exists in our data object
+    if (jobsData[jobId]) {
+      descCard.classList.add('applied-job');
+      
+      // Inject the submission date notice if it doesn't exist yet
+      let dateBadge = document.getElementById('ness-extension-date-badge');
+      if (!dateBadge) {
+        dateBadge = document.createElement('div');
+        dateBadge.id = 'ness-extension-date-badge';
+        descCard.appendChild(dateBadge);
+      }
+      dateBadge.innerText = `הוגש בתאריך: ${jobsData[jobId].date}`;
     } else {
-      descCard.classList.remove('ness-submitted-card');
+      descCard.classList.remove('applied-job');
+      
+      // Remove the date badge if it exists
+      const dateBadge = document.getElementById('ness-extension-date-badge');
+      if (dateBadge) dateBadge.remove();
     }
   });
   
@@ -41,7 +55,6 @@ function updateJobUI() {
 
 // Finds the site's original submit button and listens to clicks
 function attachSubmitButtonListener(jobId) {
-  // Look for buttons that contain the text "שליחה" or "הגשת מועמדות"
   const buttons = document.querySelectorAll('button, input[type="button"], input[type="submit"]');
   let nativeSubmitBtn = null;
 
@@ -53,16 +66,25 @@ function attachSubmitButtonListener(jobId) {
     }
   }
 
-  // If found and not already tracked, add click event
   if (nativeSubmitBtn && !nativeSubmitBtn.dataset.trackedByExtension) {
     nativeSubmitBtn.dataset.trackedByExtension = 'true';
     
     nativeSubmitBtn.addEventListener('click', () => {
-      chrome.storage.local.get(['submittedJobs'], (result) => {
-        const submittedJobs = result.submittedJobs || [];
-        if (!submittedJobs.includes(jobId)) {
-          submittedJobs.push(jobId);
-          chrome.storage.local.set({ submittedJobs }, () => {
+      chrome.storage.local.get(['submittedJobsData'], (result) => {
+        const jobsData = result.submittedJobsData || {};
+        
+        if (!jobsData[jobId]) {
+          // Get current date formatted as DD/MM/YYYY
+          const today = new Date();
+          const formattedDate = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+          
+          // Save both the status and the timestamp
+          jobsData[jobId] = {
+            submitted: true,
+            date: formattedDate
+          };
+          
+          chrome.storage.local.set({ submittedJobsData: jobsData }, () => {
             updateJobUI();
           });
         }

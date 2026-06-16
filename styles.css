@@ -16,34 +16,50 @@
   font-weight: bold;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  z-index: 999999; /* Ensure it stays on top of everything */
+  z-index: 999999;
   direction: rtl;
 }
 
-/* Styled applied to the job description card when submitted */
-.ness-submitted-card {
-  background-color: #e8f5e9 !important; 
-  border: 2px solid #2e7d32 !important;
+/* Base class for the submitted job card */
+.applied-job {
+  position: relative; /* Keeps absolute elements bounded inside the card */
+  background-color: #acf1b2 !important; 
+  border: 5px solid #000000 !important;
   border-radius: 8px !important;
   padding: 15px !important;
 }
 
-/* Extension button styling inside the page */
-#extension-toggle-submit-btn {
-  margin: 10px 0;
-  padding: 8px 12px;
-  cursor: pointer;
-  border: none;
-  border-radius: 4px;
+/* Your custom badge styling */
+.applied-job::after {
+  color: #2e7d32;
+  content: "✅ Applied";
+  position: absolute;
+  top: 15px;
+  right: 40%;
+  font-size: 50px;
+  font-weight: bolder;
+  transform: rotate(10deg);
+  z-index: 99;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+  background-color: #ffffff;
+  border-radius: 30px;
+  padding: 0.5em;
+  border: 3px solid #000000 !important;
+}
+
+/* Updated date badge: Positioned at the top-left corner */
+#ness-extension-date-badge {
+  position: absolute;
+  top: 12px;                  /* רווח קטן מהקצה העליון */
+  left: 12px;                 /* רווח קטן מהקצה השמאלי */
+  background-color: #000000;  /* רקע שחור נקי */
+  color: #ffffff;             /* טקסט לבן */
+  padding: 5px 10px;          /* מרווח פנימי אלגנטי */
+  border-radius: 4px;         /* עיגול פינות עדין */
+  font-family: Arial, sans-serif;
+  font-size: 12px;
   font-weight: bold;
-}
-
-.btn-submitted {
-  background-color: #2e7d32;
-  color: white;
-}
-
-.btn-not-submitted {
-  background-color: #1DE58D;
-  color: #000;
+  z-index: 100;
+  direction: rtl;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
