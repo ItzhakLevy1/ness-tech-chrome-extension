@@ -1,0 +1,49 @@
+/* style.css */
+
+/* The permanent sidebar container */
+#ness-tracker-sidebar {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 220px;
+  background-color: #000000;
+  border: 2px solid #1DE58D;
+  border-radius: 8px;
+  padding: 15px;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  z-index: 999999; /* Ensure it stays on top of everything */
+  direction: rtl;
+}
+
+/* Styled applied to the job description card when submitted */
+.ness-submitted-card {
+  background-color: #e8f5e9 !important; 
+  border: 2px solid #2e7d32 !important;
+  border-radius: 8px !important;
+  padding: 15px !important;
+}
+
+/* Extension button styling inside the page */
+#extension-toggle-submit-btn {
+  margin: 10px 0;
+  padding: 8px 12px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.btn-submitted {
+  background-color: #2e7d32;
+  color: white;
+}
+
+.btn-not-submitted {
+  background-color: #1DE58D;
+  color: #000;
+}
